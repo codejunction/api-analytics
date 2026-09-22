@@ -1,16 +1,7 @@
-FROM golang:1.21
-
-# Working directory
+FROM python:3.13-slim
 WORKDIR /app
-
-# Copy everything at /app
-COPY . /app
-
-# Build the go app
-RUN go build -o main .
-
-# Expose port
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . ./server
 EXPOSE 8000
-
-# Define the command to run the app
-CMD ["./main"]
+CMD ["uvicorn", "server.logger.main:app", "--host", "0.0.0.0", "--port", "8000"]
